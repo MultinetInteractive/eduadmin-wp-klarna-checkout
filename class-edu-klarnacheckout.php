@@ -54,6 +54,12 @@ if ( ! class_exists( 'EDU_KlarnaCheckout' ) ) {
 					'description' => __( 'Password for the API credentials from Klarna', 'eduadmin-wp-klarna-checkout' ),
 					'default'     => '',
 				),
+				'termsurl' => array(
+					'title'       => __( 'Terms and Conditions URL', 'eduadmin-wp-klarna-checkout' ),
+					'type'        => 'text',
+					'description' => __( 'This URL is required for Klarna Checkout', 'eduadmin-wp-klarna-checkout' ),
+					'default'     => '',
+				),
 			);
 		}
 	}
