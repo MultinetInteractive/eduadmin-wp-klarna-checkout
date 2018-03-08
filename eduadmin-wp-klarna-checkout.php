@@ -28,3 +28,43 @@ defined( 'ABSPATH' ) || die( 'This plugin must be run within the scope of WordPr
 	You should have received a copy of the GNU General Public License
 	along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+
+add_action( 'admin_init', function () {
+	if ( is_admin() && current_user_can( 'activate_plugins' ) && ( ! is_plugin_active( 'eduadmin-booking/eduadmin.php' ) && ! is_plugin_active( 'eduadmin/eduadmin.php' ) ) ) {
+		add_action( 'admin_notices', function () {
+			?>
+            <div class="error">
+                <p><?php esc_html_e( 'This plugin requires the EduAdmin-WordPress-plugin to be installed and activated.', 'eduadmin-wp-klarna-checkout' ); ?></p>
+            </div>
+			<?php
+		} );
+		deactivate_plugins( plugin_basename( __FILE__ ) );
+		if ( isset( $_GET['activate'] ) ) {
+			unset( $_GET['activate'] );
+		}
+	}
+} );
+
+if ( ! class_exists( 'EDU_KlarnaCheckout_Loader' ) ) {
+	final class EDU_KlarnaCheckout_Loader {
+		public function __construct() {
+			add_action( 'plugins_loaded', array( $this, 'init' ) );
+		}
+
+		public function init() {
+			if ( class_exists( 'EDU_Integration' ) ) {
+				require_once __DIR__ . '/class-edu-klarnacheckout.php';
+
+				add_filter( 'edu_integrations', array( $this, 'add_integration' ) );
+			}
+		}
+
+		public function add_integration( $integrations ) {
+			$integrations[] = 'EDU_KlarnaCheckout';
+
+			return $integrations;
+		}
+	}
+
+	$edu_klarnacheckout_loader = new EDU_KlarnaCheckout_Loader();
+}
