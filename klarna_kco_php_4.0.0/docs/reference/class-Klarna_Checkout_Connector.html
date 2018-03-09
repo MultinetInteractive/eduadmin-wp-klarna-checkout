@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+
+	<title>Class Klarna_Checkout_Connector</title>
+
+	<link rel="stylesheet" href="resources/bootstrap.min.css?08b23951ef4599ca9cbf1f902d0e8290c9653ddd">
+	<link rel="stylesheet" href="resources/style.css?062e9e59e0b8c44fbaaded5b7ffc21f907b78669">
+	<link rel="stylesheet" href="resources/klarna.css?dec3b68768fbf7f93db60302607d658f13b60d6d">
+
+</head>
+
+<body>
+	<div id="navigation" class="navbar navbar-fixed-top">
+		<div class="navbar-inner">
+			<div class="container">
+				<a href="index.html" class="brand">Overview</a>
+				<div class="nav-collapse">
+					<ul class="nav">
+						<li>
+<span>Package</span>						</li>
+						<li class="active">
+<span>Class</span>						</li>
+
+
+
+
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div id="left">
+	<div id="menu">
+		<form id="search" class="form-search">
+			<input type="hidden" name="cx" value="">
+			<input type="hidden" name="ie" value="UTF-8">
+			<input type="text" name="q" class="search-query" placeholder="Search">
+		</form>
+
+
+		<div id="groups">
+				<h3>Packages</h3>
+			<ul>
+					<li>
+						<a href="package-Klarna.html">
+							Klarna<span></span>
+						</a>
+							<ul>
+					<li>
+						<a href="package-Klarna.Checkout.html">
+							Checkout						</a>
+							</li>
+								</ul></li>
+					<li>
+						<a href="package-Payment.html">
+							Payment<span></span>
+						</a>
+							<ul>
+					<li>
+						<a href="package-Payment.Klarna.html">
+							Klarna<span></span>
+						</a>
+							<ul>
+					<li>
+						<a href="package-Payment.Klarna.HTTP.html">
+							HTTP						</a>
+							</li>
+					<li>
+						<a href="package-Payment.Klarna.Interfaces.html">
+							Interfaces						</a>
+							</li>
+					<li>
+						<a href="package-Payment.Klarna.Unit.html">
+							Unit<span></span>
+						</a>
+							<ul>
+					<li>
+						<a href="package-Payment.Klarna.Unit.Tests.html">
+							Tests						</a>
+							</li>
+								</ul></li></ul></li></ul></li>
+			</ul>
+		</div>
+
+
+		<div id="elements">
+			<h3>Classes</h3>
+			<ul>
+				<li><a href="class-Klarna_Checkout_BasicConnector.html">Klarna_Checkout_BasicConnector</a></li>
+				<li class="active"><a href="class-Klarna_Checkout_Connector.html">Klarna_Checkout_Connector</a></li>
+				<li><a href="class-Klarna_Checkout_Digest.html">Klarna_Checkout_Digest</a></li>
+				<li><a href="class-Klarna_Checkout_Order.html">Klarna_Checkout_Order</a></li>
+				<li><a href="class-Klarna_Checkout_RecurringOrder.html">Klarna_Checkout_RecurringOrder</a></li>
+				<li><a href="class-Klarna_Checkout_RecurringStatus.html">Klarna_Checkout_RecurringStatus</a></li>
+				<li><a href="class-Klarna_Checkout_Resource.html">Klarna_Checkout_Resource</a></li>
+				<li><a href="class-Klarna_Checkout_UserAgent.html">Klarna_Checkout_UserAgent</a></li>
+			</ul>
+
+			<h3>Interfaces</h3>
+			<ul>
+				<li><a href="class-Klarna_Checkout_ApiErrorException.html">Klarna_Checkout_ApiErrorException</a></li>
+				<li><a href="class-Klarna_Checkout_ConnectionErrorException.html">Klarna_Checkout_ConnectionErrorException</a></li>
+				<li><a href="class-Klarna_Checkout_ConnectorException.html">Klarna_Checkout_ConnectorException</a></li>
+				<li><a href="class-Klarna_Checkout_ConnectorInterface.html">Klarna_Checkout_ConnectorInterface</a></li>
+				<li><a href="class-Klarna_Checkout_Exception.html">Klarna_Checkout_Exception</a></li>
+				<li><a href="class-Klarna_Checkout_ResourceCreateableInterface.html">Klarna_Checkout_ResourceCreateableInterface</a></li>
+				<li><a href="class-Klarna_Checkout_ResourceFetchableInterface.html">Klarna_Checkout_ResourceFetchableInterface</a></li>
+				<li><a href="class-Klarna_Checkout_ResourceInterface.html">Klarna_Checkout_ResourceInterface</a></li>
+				<li><a href="class-Klarna_Checkout_ResourceUpdateableInterface.html">Klarna_Checkout_ResourceUpdateableInterface</a></li>
+			</ul>
+
+
+
+
+		</div>
+	</div>
+</div>
+
+<div id="splitter"></div>
+
+<div id="right">
+	<div id="rightInner">
+<div id="content" class="class">
+	<h1>Class Klarna_Checkout_Connector</h1>
+
+
+	<div class="description">
+	<p>Connector factory</p>
+	</div>
+
+
+
+
+
+
+
+
+
+	<div class="alert alert-info">
+		
+		
+		
+		<b>Package:</b> <a href="package-Klarna.html">Klarna</a>\<a href="package-Klarna.Checkout.html">Checkout</a><br>
+
+				<b>Category:</b>
+				Payment<br>
+				<b>Copyright:</b>
+				2015 Klarna AB<br>
+				<b>License:</b>
+				<a href="http://www.apache.org/licenses/LICENSE-2.0">Apache license v2.0</a><br>
+				<b>Author:</b>
+				Rickard D. <a href="&#109;a&#105;l&#116;o&#x3a;r&#x69;&#99;&#x6b;&#97;&#x72;&#100;&#x2e;&#100;&#x79;&#98;&#x65;&#99;&#x6b;&#64;&#x6b;&#108;&#x61;&#114;&#x6e;&#97;&#x2e;&#99;&#x6f;&#109;">r&#x69;&#99;&#x6b;&#97;&#x72;&#100;&#x2e;&#100;&#x79;&#98;&#x65;&#99;&#x6b;&#64;&#x6b;&#108;&#x61;&#114;&#x6e;&#97;&#x2e;&#99;&#x6f;&#109;</a><br>
+				<b>Author:</b>
+				Christer G. <a href="&#109;&#97;&#x69;&#x6c;&#116;&#111;&#58;&#x63;&#x68;&#114;&#105;&#x73;&#x74;e&#114;&#46;&#x67;&#x75;&#115;&#116;&#x61;&#x76;s&#115;&#111;&#x6e;&#x40;&#107;&#108;&#x61;&#x72;n&#97;&#46;&#x63;&#x6f;&#109;">&#x63;&#x68;&#114;&#105;&#x73;&#x74;e&#114;&#46;&#x67;&#x75;&#115;&#116;&#x61;&#x76;s&#115;&#111;&#x6e;&#x40;&#107;&#108;&#x61;&#x72;n&#97;&#46;&#x63;&#x6f;&#109;</a><br>
+				<b>Author:</b>
+				David K. <a href="&#109;a&#105;l&#116;o&#x3a;d&#x61;&#118;&#x69;&#100;&#x2e;&#107;&#x65;&#105;&#x6a;&#115;&#x65;&#114;&#x40;&#107;&#x6c;&#97;&#x72;&#110;&#x61;&#46;&#x63;&#111;&#x6d;">d&#x61;&#118;&#x69;&#100;&#x2e;&#107;&#x65;&#105;&#x6a;&#115;&#x65;&#114;&#x40;&#107;&#x6c;&#97;&#x72;&#110;&#x61;&#46;&#x63;&#111;&#x6d;</a><br>
+				<b>Link:</b>
+				<a href="http://developers.klarna.com/">http://developers.klarna.com/</a><br>
+			<b>Located at</b> <a href="source-class-Klarna_Checkout_Connector.html#29-70" title="Go to source code">Klarna/Checkout/Connector.php</a>
+		<br>
+	</div>
+
+
+
+		<h2>Methods summary</h2>
+		<table class="summary table table-bordered table-striped methods" id="methods">
+		<tr data-order="create" id="_create">
+
+			<td class="attributes"><code>
+				 public static
+				<code><a href="class-Klarna_Checkout_ConnectorInterface.html">Klarna_Checkout_ConnectorInterface</a></code>
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#_create">#</a>
+			<code><a href="source-class-Klarna_Checkout_Connector.html#53-69" title="Go to source code">create</a>( <span>string <var>$secret</var></span>, <span>string <var>$domain</var> = <code><a href="class-Klarna_Checkout_Connector.html#BASE_URL">Klarna_Checkout_Connector::<b>BASE_URL</b></a></code></span> )</code>
+
+			<div class="description short">
+				<p>Create a new Checkout Connector</p>
+			</div>
+
+			<div class="description detailed hidden">
+				<p>Create a new Checkout Connector</p>
+
+
+					<h4>Parameters</h4>
+					<div class="list"><dl>
+						<dt><var>$secret</var></dt>
+						<dd>string used to sign requests</dd>
+						<dt><var>$domain</var></dt>
+						<dd>the domain used for requests</dd>
+					</dl></div>
+
+					<h4>Returns</h4>
+					<div class="list">
+						<code><a href="class-Klarna_Checkout_ConnectorInterface.html">Klarna_Checkout_ConnectorInterface</a></code>
+					</div>
+
+
+
+
+			</div>
+			</div></td>
+		</tr>
+		</table>
+
+
+
+		<h3>Magic methods summary</h3>
+
+
+
+
+
+		<h2>Constants summary</h2>
+		<table class="summary table table-bordered table-striped constants" id="constants">
+		<tr data-order="BASE_TEST_URL" id="BASE_TEST_URL">
+
+			<td class="attributes"><code>string</code></td>
+			<td class="name">
+				<code>
+					<a href="source-class-Klarna_Checkout_Connector.html#43-46" title="Go to source code"><b>BASE_TEST_URL</b></a>
+				</code>
+
+				<div class="description short">
+					<p>Domain of the testdrive</p>
+				</div>
+
+				<div class="description detailed hidden">
+					<p>Domain of the testdrive</p>
+
+				</div>
+			</td>
+			<td class="value">
+				<div>
+					<a href="#BASE_TEST_URL" class="anchor">#</a>
+					<code><span class="php-quote">&quot;https://checkout.testdrive.klarna.com&quot;</span></code>
+				</div>
+			</td>
+		</tr>
+		<tr data-order="BASE_URL" id="BASE_URL">
+
+			<td class="attributes"><code>string</code></td>
+			<td class="name">
+				<code>
+					<a href="source-class-Klarna_Checkout_Connector.html#48-51" title="Go to source code"><b>BASE_URL</b></a>
+				</code>
+
+				<div class="description short">
+					<p>Domain of the live system</p>
+				</div>
+
+				<div class="description detailed hidden">
+					<p>Domain of the live system</p>
+
+				</div>
+			</td>
+			<td class="value">
+				<div>
+					<a href="#BASE_URL" class="anchor">#</a>
+					<code><span class="php-quote">&quot;https://checkout.klarna.com&quot;</span></code>
+				</div>
+			</td>
+		</tr>
+		</table>
+
+
+
+
+</div>
+	</div>
+
+	<div id="footer">
+		 API documentation generated by <a href="http://apigen.org">ApiGen</a>
+	</div>
+</div>
+<script src="resources/combined.js"></script>
+<script src="elementlist.js"></script>
+</body>
+</html>

@@ -1,0 +1,14 @@
+build:
+    nodes:
+        analysis:
+            dependencies:
+                before:
+                    - composer require --dev johnpbloch/wordpress
+            project_setup:
+                override: true
+            tests:
+                override: [php-scrutinizer-run]
+filter:
+    dependency_paths:
+        - wordpress/
+        - klarna_kco_php_4.0.0/

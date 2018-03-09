@@ -52,7 +52,12 @@ if ( ! class_exists( 'EDU_KlarnaCheckout_Loader' ) ) {
 		}
 
 		public function init() {
+			if ( ! class_exists( 'Klarna_Checkout_Connector' ) ) {
+				require_once __DIR__ . '/klarna_kco_php_4.0.0/src/Klarna/Checkout.php';
+			}
+
 			if ( class_exists( 'EDU_Integration' ) ) {
+
 				require_once __DIR__ . '/class-edu-klarnacheckout.php';
 
 				add_filter( 'edu_integrations', array( $this, 'add_integration' ) );

@@ -14,18 +14,60 @@ if ( ! class_exists( 'EDU_KlarnaCheckout' ) ) {
 			add_action( 'eduadmin-checkpaymentplugins', array( $this, 'intercept_booking' ) );
 			add_action( 'eduadmin-processbooking', array( $this, 'process_booking' ) );
 			add_action( 'wp_loaded', array( $this, 'process_klarnaresponse' ) );
+
+			add_shortcode( 'eduadmin-klarna-testpage', array( $this, 'test_page' ) );
 		}
 
-		public function intercept_booking() {
+		/**
+		 * @param int $booking_id
+		 */
+		public function test_page( $attributes ) {
+			$attributes = shortcode_atts(
+				array(
+					'bookingid' => 0,
+				),
+				normalize_empty_atts( $attributes ),
+				'test_page'
+			);
+
+			$event_booking = EDUAPI()->OData->Bookings->GetItem(
+				intval( $attributes['bookingid'] ),
+				null,
+				'Customer($select=CustomerId;),ContactPerson($select=PersonId;)'
+			);
+			$_customer     = EDUAPI()->OData->Customers->GetItem( $event_booking['Customer']['CustomerId'] );
+			$_contact      = EDUAPI()->OData->Persons->GetItem( $event_booking['ContactPerson']['PersonId'] );
+
+			$ebi = new EduAdmin_BookingInfo( $event_booking, $_customer, $_contact );
+
+			do_action( 'eduadmin-processbooking', $ebi );
+		}
+
+		/**
+		 * @param EduAdmin_BookingInfo|null $ebi
+		 */
+		public function intercept_booking( $ebi = null ) {
 			if ( 'no' === $this->get_option( 'enabled', 'no' ) ) {
 				return;
 			}
+
+			if ( ! empty( $_POST['act'] ) && 'bookCourse' === $_POST['act'] ) {
+				$ebi->NoRedirect = true;
+			}
 		}
 
-		public function process_booking() {
+		/**
+		 * @param EduAdmin_BookingInfo|null $ebi
+		 */
+		public function process_booking( $ebi = null ) {
 			if ( 'no' === $this->get_option( 'enabled', 'no' ) ) {
 				return;
 			}
+
+			$ebi->NoRedirect = true;
+
+			$checkout = $this->create_checkout( $ebi );
+			include_once 'checkout-page.php';
 		}
 
 		public function process_klarnaresponse() {
@@ -61,6 +103,34 @@ if ( ! class_exists( 'EDU_KlarnaCheckout' ) ) {
 					'default'     => '',
 				),
 			);
+		}
+
+		/**
+		 * @param EduAdmin_BookingInfo|null $ebi
+		 *
+		 * @return Klarna_Checkout_Order
+		 */
+		public function create_checkout( $ebi = null ) {
+			$create                  = array();
+			$create['locale']        = strtolower( str_replace( '_', '-', get_locale() ) );
+			$create['cart']          = array();
+			$create['cart']['items'] = array();
+
+			try {
+				$connector = Klarna_Checkout_Connector::create(
+					'',
+					Klarna_Checkout_Connector::BASE_TEST_URL
+				);
+
+				$order = new Klarna_Checkout_Order( $connector );
+				$order->create( $create );
+
+				return $order;
+			} catch ( Klarna_Checkout_ApiErrorException $ex ) {
+				EDU()->write_debug( $ex->getMessage() );
+				EDU()->write_debug( $ex->getPayload() );
+				EDU()->write_debug( $create );
+			}
 		}
 	}
 }
