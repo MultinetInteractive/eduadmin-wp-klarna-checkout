@@ -268,6 +268,15 @@ if ( ! class_exists( 'EDU_KlarnaCheckout' ) ) {
 					$order->fetch();
 
 					if ( 'checkout_complete' === $order['status'] ) {
+
+						$patch_booking       = new stdClass();
+						$patch_booking->Paid = true;
+
+						EDUAPI()->REST->Booking->PatchBooking(
+							intval( $_GET['booking_id'] ),
+							$patch_booking
+						);
+
 						$update           = array();
 						$update['status'] = 'created';
 						$order->update( $update );
