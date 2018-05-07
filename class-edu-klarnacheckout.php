@@ -25,25 +25,38 @@ if ( ! class_exists( 'EDU_KlarnaCheckout' ) ) {
 		public function test_page( $attributes ) {
 			$attributes = shortcode_atts(
 				array(
-					'bookingid' => 0,
+					'bookingid'          => 0,
+					'programmebookingid' => 0,
 				),
 				normalize_empty_atts( $attributes ),
 				'test_page'
 			);
 
-			$event_booking = EDUAPI()->OData->Bookings->GetItem(
-				intval( $attributes['bookingid'] ),
-				null,
-				'Customer($select=CustomerId;),ContactPerson($select=PersonId;),OrderRows',
-				false
-			);
-			$_customer     = EDUAPI()->OData->Customers->GetItem(
+			if ( $attributes['bookingid'] > 0 ) {
+				$event_booking = EDUAPI()->OData->Bookings->GetItem(
+					$attributes['bookingid'],
+					null,
+					'Customer($select=CustomerId;),ContactPerson($select=PersonId;),OrderRows',
+					false
+				);
+			} elseif ( $attributes['programmebookingid'] > 0 ) {
+				$event_booking = EDUAPI()->OData->ProgrammeBookings->GetItem(
+					$attributes['programmebookingid'],
+					null,
+					'Customer($select=CustomerId;),ContactPerson($select=PersonId;),OrderRows',
+					false
+				);
+			}
+
+			EDU()->write_debug($event_booking);
+
+			$_customer = EDUAPI()->OData->Customers->GetItem(
 				$event_booking['Customer']['CustomerId'],
 				null,
 				null,
 				false
 			);
-			$_contact      = EDUAPI()->OData->Persons->GetItem(
+			$_contact  = EDUAPI()->OData->Persons->GetItem(
 				$event_booking['ContactPerson']['PersonId'],
 				null,
 				null,
@@ -67,7 +80,7 @@ if ( ! class_exists( 'EDU_KlarnaCheckout' ) ) {
 				return;
 			}
 
-			if ( ! empty( $_POST['act'] ) && 'bookCourse' === $_POST['act'] ) {
+			if ( ! empty( $_POST['act'] ) && ( 'bookCourse' === $_POST['act'] || 'bookProgramme' === $_POST['act'] ) ) {
 				$ebi->NoRedirect = true;
 			}
 		}
@@ -178,22 +191,34 @@ if ( ! class_exists( 'EDU_KlarnaCheckout' ) ) {
 
 			$current_url = esc_url( "{$_SERVER['REQUEST_SCHEME']}://{$_SERVER['HTTP_HOST']}{$_SERVER['REQUEST_URI']}" );
 
+			$booking_id           = 0;
+			$programme_booking_id = 0;
+
+			if ( ! empty( $ebi->EventBooking['BookingId'] ) ) {
+				$booking_id = intval( $ebi->EventBooking['BookingId'] );
+			}
+
+			if ( ! empty( $ebi->EventBooking['ProgrammeBookingId'] ) ) {
+				$programme_booking_id = intval( $ebi->EventBooking['ProgrammeBookingId'] );
+			}
 
 			$confirmation_url = add_query_arg(
 				array(
-					'klarna_order_id' => '{checkout.order.id}',
-					'booking_id'      => $ebi->EventBooking['BookingId'],
-					'edu-valid-form'  => wp_create_nonce( 'edu-booking-confirm' ),
-					'act'             => 'paymentCompleted'
+					'klarna_order_id'      => '{checkout.order.id}',
+					'booking_id'           => $booking_id,
+					'programme_booking_id' => $programme_booking_id,
+					'edu-valid-form'       => wp_create_nonce( 'edu-booking-confirm' ),
+					'act'                  => 'paymentCompleted',
 				),
 				$current_url
 			);
 
 			$push_url = add_query_arg(
 				array(
-					'klarna_order_id' => '{checkout.order.id}',
-					'booking_id'      => $ebi->EventBooking['BookingId'],
-					'status'          => 'push',
+					'klarna_order_id'      => '{checkout.order.id}',
+					'booking_id'           => $booking_id,
+					'programme_booking_id' => $programme_booking_id,
+					'status'               => 'push',
 				),
 				$current_url
 			);
@@ -267,15 +292,28 @@ if ( ! class_exists( 'EDU_KlarnaCheckout' ) ) {
 
 					$order->fetch();
 
+					$booking_id           = intval( $_GET['booking_id'] );
+					$programme_booking_id = intval( $_GET['programme_booking_id'] );
+
+
 					if ( 'checkout_complete' === $order['status'] ) {
 
 						$patch_booking       = new stdClass();
 						$patch_booking->Paid = true;
 
-						EDUAPI()->REST->Booking->PatchBooking(
-							intval( $_GET['booking_id'] ),
-							$patch_booking
-						);
+						if ( $booking_id > 0 ) {
+							EDUAPI()->REST->Booking->PatchBooking(
+								$booking_id,
+								$patch_booking
+							);
+						}
+
+						if ( $programme_booking_id > 0 ) {
+							EDUAPI()->REST->ProgrammeBooking->PatchBooking(
+								$programme_booking_id,
+								$patch_booking
+							);
+						}
 
 						$update           = array();
 						$update['status'] = 'created';
