@@ -48,20 +48,20 @@ if ( ! class_exists( 'EDU_KlarnaCheckout' ) ) {
 				);
 			}
 
-			EDU()->write_debug($event_booking);
-
 			$_customer = EDUAPI()->OData->Customers->GetItem(
 				$event_booking['Customer']['CustomerId'],
 				null,
 				null,
 				false
 			);
-			$_contact  = EDUAPI()->OData->Persons->GetItem(
+
+			$_contact = EDUAPI()->OData->Persons->GetItem(
 				$event_booking['ContactPerson']['PersonId'],
 				null,
 				null,
 				false
 			);
+
 
 			$ebi = new EduAdmin_BookingInfo( $event_booking, $_customer, $_contact );
 
@@ -95,7 +95,7 @@ if ( ! class_exists( 'EDU_KlarnaCheckout' ) ) {
 
 			$ebi->NoRedirect = true;
 
-			if ( empty( EDU()->session['klarna-order-id'] ) && empty( $_GET['klarna_order_id'] ) ) {
+			if ( empty( $_GET['klarna_order_id'] ) || empty( EDU()->session['klarna-order-id'] ) ) {
 				$checkout = $this->create_checkout( $ebi );
 
 				$snippet = $checkout['gui']['snippet'];
