@@ -1,6 +1,9 @@
 sudo: false
 language: php
 
+script:
+  - echo Pretending to do something nice.
+
 deploy:
   - provider: script
     skip_cleanup: true
