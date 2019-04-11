@@ -301,6 +301,9 @@ if ( ! class_exists( 'EDU_KlarnaCheckout' ) ) {
 						$patch_booking       = new stdClass();
 						$patch_booking->Paid = true;
 
+						// We're setting this as a Card Payment, so that our service in the background will remove it if it doesn't get paid in time (15 minute slot)
+						$patch_booking->PaymentMethodId = 2;
+
 						if ( $booking_id > 0 ) {
 							EDUAPI()->REST->Booking->PatchBooking(
 								$booking_id,
