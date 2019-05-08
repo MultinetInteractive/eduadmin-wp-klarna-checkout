@@ -35,7 +35,6 @@ fi
 rm -f $PROJECT_ROOT/composer.json
 rm -f $PROJECT_ROOT/.scrutinizer.yml
 rm -f $PROJECT_ROOT/.travis.yml
-rm -f $PROJECT_ROOT/README.md
 rm -f $PROJECT_ROOT/.gitignore
 rm -fR $PROJECT_ROOT/scripts
 rm -fR $PROJECT_ROOT/.git
