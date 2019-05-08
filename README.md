@@ -2,7 +2,7 @@
 Contributors: mnchga
 Tags: booking, participants, courses, events, eduadmin, lega online, klarna
 Requires at least: 4.7
-Tested up to: 4.9
+Tested up to: 5.1
 Stable tag: 1.0.3
 Requires PHP: 5.2
 License: GPL3
