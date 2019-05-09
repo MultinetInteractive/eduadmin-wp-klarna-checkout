@@ -194,12 +194,16 @@ if ( ! class_exists( 'EDU_KlarnaCheckout' ) ) {
 			$booking_id           = 0;
 			$programme_booking_id = 0;
 
+			$reference_id = 0;
+
 			if ( ! empty( $ebi->EventBooking['BookingId'] ) ) {
 				$booking_id = intval( $ebi->EventBooking['BookingId'] );
+				$reference_id = $booking_id;
 			}
 
 			if ( ! empty( $ebi->EventBooking['ProgrammeBookingId'] ) ) {
 				$programme_booking_id = intval( $ebi->EventBooking['ProgrammeBookingId'] );
+				$reference_id = $programme_booking_id;
 			}
 
 			$confirmation_url = add_query_arg(
@@ -228,6 +232,10 @@ if ( ! class_exists( 'EDU_KlarnaCheckout' ) ) {
 			$merchant['push_uri']         = $push_url;
 
 			$create['merchant'] = $merchant;
+
+			$create['merchant_reference'] = array();
+			$create['merchant_reference']['orderid1'] = $reference_id;
+			$create['merchant_reference']['orderid2'] = $reference_id;
 
 			$create['cart']          = array();
 			$create['cart']['items'] = array();
