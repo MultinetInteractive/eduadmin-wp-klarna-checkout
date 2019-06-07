@@ -3,7 +3,7 @@ Contributors: mnchga
 Tags: booking, participants, courses, events, eduadmin, lega online, klarna
 Requires at least: 4.7
 Tested up to: 5.1
-Stable tag: 1.0.5
+Stable tag: 1.1.0
 Requires PHP: 5.2
 License: GPL3
 License-URI: https://www.gnu.org/licenses/gpl-3.0.en.html
@@ -27,6 +27,9 @@ Stats
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/MultinetInteractive/eduadmin-wp-klarna-checkout/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/MultinetInteractive/eduadmin-wp-klarna-checkout/?branch=master)
 
 == Changelog ==
+
+### 1.1.0
+- feat: Added event location (If applicable) and start/enddate (If applicable) to order rows
 
 ### 1.0.5
 - add: Set `BookingId` in `merchant_reference1` for tracing ability between Klarna and EduAdmin.

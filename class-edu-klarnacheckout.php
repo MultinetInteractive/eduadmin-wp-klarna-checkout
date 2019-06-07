@@ -62,7 +62,6 @@ if ( ! class_exists( 'EDU_KlarnaCheckout' ) ) {
 				false
 			);
 
-
 			$ebi = new EduAdmin_BookingInfo( $event_booking, $_customer, $_contact );
 
 			if ( ! empty( EDU()->session['klarna-order-id'] ) && ! empty( $_GET['klarna_order_id'] ) && EDU()->session['klarna-order-id'] === $_GET['klarna_order_id'] ) {
@@ -196,14 +195,36 @@ if ( ! class_exists( 'EDU_KlarnaCheckout' ) ) {
 
 			$reference_id = 0;
 
+			$_event = null;
+
 			if ( ! empty( $ebi->EventBooking['BookingId'] ) ) {
-				$booking_id = intval( $ebi->EventBooking['BookingId'] );
+				$booking_id   = intval( $ebi->EventBooking['BookingId'] );
 				$reference_id = $booking_id;
+
+				$_event = EDUAPI()->OData->Events->GetItem( $ebi->EventBooking['EventId'] );
 			}
 
 			if ( ! empty( $ebi->EventBooking['ProgrammeBookingId'] ) ) {
 				$programme_booking_id = intval( $ebi->EventBooking['ProgrammeBookingId'] );
-				$reference_id = $programme_booking_id;
+				$reference_id         = $programme_booking_id;
+
+				$_event = EDUAPI()->OData->ProgrammeStarts->GetItem( $ebi->EventBooking['ProgrammeStartId'] );
+			}
+
+			$rowExtraInfo = "";
+
+			if ( null != $_event ) {
+				if ( ! empty( $_event['City'] ) ) {
+					$rowExtraInfo .= ';' . $_event['City'];
+				}
+
+				if ( ! empty( $_event['StartDate'] ) ) {
+					$rowExtraInfo .= ';' . date( "Y-m-d", strtotime( $_event['StartDate'] ) );
+				}
+
+				if ( ! empty( $_event['EndDate'] ) ) {
+					$rowExtraInfo .= ';' . date( "Y-m-d", strtotime( $_event['EndDate'] ) );
+				}
 			}
 
 			$confirmation_url = add_query_arg(
@@ -233,7 +254,7 @@ if ( ! class_exists( 'EDU_KlarnaCheckout' ) ) {
 
 			$create['merchant'] = $merchant;
 
-			$create['merchant_reference'] = array();
+			$create['merchant_reference']             = array();
 			$create['merchant_reference']['orderid1'] = $reference_id;
 			$create['merchant_reference']['orderid2'] = $reference_id;
 
@@ -244,7 +265,7 @@ if ( ! class_exists( 'EDU_KlarnaCheckout' ) ) {
 				$cart_item = array();
 
 				$cart_item['reference'] = $order_row['ItemNumber'];
-				$cart_item['name']      = $order_row['Description'];
+				$cart_item['name']      = $order_row['Description'] . $rowExtraInfo;
 				$cart_item['quantity']  = intval( $order_row['Quantity'] );
 
 				if ( ! $order_row['PriceIncVat'] ) {
