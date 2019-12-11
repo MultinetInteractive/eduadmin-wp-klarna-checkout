@@ -7,6 +7,7 @@ if ( ! class_exists( 'EDU_KlarnaCheckout' ) ) {
 			$this->id          = 'eduadmin-klarnacheckout';
 			$this->displayName = __( 'Klarna Checkout', 'eduadmin-wp-klarna-checkout' );
 			$this->description = '';
+			$this->type        = 'payment';
 
 			$this->init_form_fields();
 			$this->init_settings();
