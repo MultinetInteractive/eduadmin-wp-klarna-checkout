@@ -28,6 +28,10 @@ Stats
 
 == Changelog ==
 
+### 1.2.1
+
+- fix: `purchase_country` is supposed to be the merchant country.
+
 ### 1.2.0
 
 This version required EduAdmin Booking version 2.13.0 to work properly

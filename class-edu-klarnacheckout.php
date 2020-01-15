@@ -184,14 +184,6 @@ if ( ! class_exists( 'EDU_KlarnaCheckout' ) ) {
 			$organization     = EDUAPIHelper()->GetOrganization();
 			$purchase_country = $organization["CountryCode"];
 
-			if ( ! empty( $ebi->Customer["CountryCode"] ) ) {
-				$purchase_country = $ebi->Customer["CountryCode"];
-
-				if ( ! empty( $ebi->Customer["BillingInfo"]["CountryCode"] ) ) {
-					$purchase_country = $ebi->Customer["BillingInfo"]["CountryCode"];
-				}
-			}
-
 			$create['locale']            = strtolower( str_replace( '_', '-', get_locale() ) );
 			$create['purchase_country']  = $purchase_country;
 			$create['purchase_currency'] = get_option( 'eduadmin-currency', 'SEK' );
