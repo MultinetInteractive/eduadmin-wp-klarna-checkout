@@ -52,7 +52,7 @@ if ( ! class_exists( 'EDU_KlarnaCheckout' ) ) {
 			$_customer = EDUAPI()->OData->Customers->GetItem(
 				$event_booking['Customer']['CustomerId'],
 				null,
-				null,
+				"BillingInfo",
 				false
 			);
 
@@ -181,8 +181,19 @@ if ( ! class_exists( 'EDU_KlarnaCheckout' ) ) {
 
 			$create = array();
 
+			$organization     = EDUAPIHelper()->GetOrganization();
+			$purchase_country = $organization["CountryCode"];
+
+			if ( ! empty( $ebi->Customer["CountryCode"] ) ) {
+				$purchase_country = $ebi->Customer["CountryCode"];
+
+				if ( ! empty( $ebi->Customer["BillingInfo"]["CountryCode"] ) ) {
+					$purchase_country = $ebi->Customer["BillingInfo"]["CountryCode"];
+				}
+			}
+
 			$create['locale']            = strtolower( str_replace( '_', '-', get_locale() ) );
-			$create['purchase_country']  = 'SE';
+			$create['purchase_country']  = $purchase_country;
 			$create['purchase_currency'] = get_option( 'eduadmin-currency', 'SEK' );
 
 			$merchant              = array();
@@ -235,6 +246,7 @@ if ( ! class_exists( 'EDU_KlarnaCheckout' ) ) {
 					'programme_booking_id' => $programme_booking_id,
 					'edu-valid-form'       => wp_create_nonce( 'edu-booking-confirm' ),
 					'act'                  => 'paymentCompleted',
+					'edu-thankyou'         => $reference_id
 				),
 				$current_url
 			);
