@@ -184,6 +184,21 @@ if ( ! class_exists( 'EDU_KlarnaCheckout' ) ) {
 			$organization     = EDUAPIHelper()->GetOrganization();
 			$purchase_country = $organization["CountryCode"];
 
+			$emd_info = array(
+				'unique_account_identifier' => ( ! empty( $ebi->Contact['Email'] ) ? $ebi->Contact['Email'] : $ebi->Contact['PersonId'] ),
+				'account_registration_date' => date( 'Y-m-d\TH:i', strtotime( $ebi->Contact['Created'] ) ),
+				'account_last_modified'     => date( 'Y-m-d\TH:i' )
+			);
+
+			$emd_info       = array( $emd_info );
+			$emd_attachment = json_encode( array(
+				'customer_account_info' => $emd_info
+			) );
+
+			$create['attachment']                 = array();
+			$create['attachment']['content_type'] = 'application/vnd.klarna.internal.emd-v2+json';
+			$create['attachment']['body']         = $emd_attachment;
+
 			$create['locale']            = strtolower( str_replace( '_', '-', get_locale() ) );
 			$create['purchase_country']  = $purchase_country;
 			$create['purchase_currency'] = get_option( 'eduadmin-currency', 'SEK' );

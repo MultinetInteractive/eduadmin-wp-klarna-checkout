@@ -5,10 +5,10 @@ defined( 'ABSPATH' ) || die( 'This plugin must be run within the scope of WordPr
  * Plugin Name: EduAdmin Booking - Klarna Checkout-plugin
  * Plugin URI:  https://www.eduadmin.se
  * Description: Plugin to EduAdmin Booking to enable Klarna Checkout-integration
- * Version:     1.2.1
+ * Version:     1.3.0
  * GitHub Plugin Uri: https://github.com/MultinetInteractive/eduadmin-wp-klarna-checkout
  * Requires at least: 4.7
- * Tested up to: 5.2
+ * Tested up to: 5.3
  * Author: Chris Gårdenberg, MultiNet Interactive AB
  * Author URI: https://www.multinet.com
  * License: GPL3
