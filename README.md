@@ -3,7 +3,7 @@ Contributors: mnchga
 Tags: booking, participants, courses, events, eduadmin, lega online, klarna
 Requires at least: 4.7
 Tested up to: 5.3
-Stable tag: 1.3.0
+Stable tag: 1.4.0
 Requires PHP: 5.2
 License: GPL3
 License-URI: https://www.gnu.org/licenses/gpl-3.0.en.html
@@ -27,6 +27,10 @@ Stats
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/MultinetInteractive/eduadmin-wp-klarna-checkout/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/MultinetInteractive/eduadmin-wp-klarna-checkout/?branch=master)
 
 == Changelog ==
+
+### 1.4.0
+
+- feat: Added EMD (Event data)
 
 ### 1.3.0
 

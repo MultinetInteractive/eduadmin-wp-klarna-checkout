@@ -185,19 +185,76 @@ if ( ! class_exists( 'EDU_KlarnaCheckout' ) ) {
 			$purchase_country = $organization["CountryCode"];
 
 			$emd_info = array(
-				'unique_account_identifier' => ( ! empty( $ebi->Contact['Email'] ) ? $ebi->Contact['Email'] : $ebi->Contact['PersonId'] ),
+				'unique_account_identifier' => ( ! empty( $ebi->Contact['Email'] ) ? $ebi->Contact['Email'] : "uid:" . $ebi->Contact['PersonId'] ),
 				'account_registration_date' => date( 'Y-m-d\TH:i', strtotime( $ebi->Contact['Created'] ) ),
 				'account_last_modified'     => date( 'Y-m-d\TH:i' )
 			);
 
-			$emd_info       = array( $emd_info );
-			$emd_attachment = json_encode( array(
-				'customer_account_info' => $emd_info
-			) );
+			$emd_info = array( $emd_info );
+
+			$booking_id           = 0;
+			$programme_booking_id = 0;
+
+			$reference_id = 0;
+
+			$_event = null;
+
+			$eventName = '';
+
+			$locationAddress    = '';
+			$locationCountry    = '';
+			$locationPostalCode = '';
+
+			if ( ! empty( $ebi->EventBooking['BookingId'] ) ) {
+				$booking_id   = intval( $ebi->EventBooking['BookingId'] );
+				$reference_id = $booking_id;
+
+				$_event = EDUAPI()->OData->Events->GetItem( $ebi->EventBooking['EventId'], null, "LocationAddress" );
+
+				$eventName = $_event['EventName'];
+
+				if ( ! empty( $_event['LocationAddress'] ) && $_event['LocationAdress'] != null ) {
+					$locationAddress    = $_event['LocationAddress']['Address'];
+					$locationCountry    = $_event['LocationAddress']['Country'];
+					$locationPostalCode = $_event['LocationAddress']['AddressZip'];
+				}
+			}
+
+			if ( ! empty( $ebi->EventBooking['ProgrammeBookingId'] ) ) {
+				$programme_booking_id = intval( $ebi->EventBooking['ProgrammeBookingId'] );
+				$reference_id         = $programme_booking_id;
+
+				$_event = EDUAPI()->OData->ProgrammeStarts->GetItem( $ebi->EventBooking['ProgrammeStartId'] );
+
+				$eventName = $_event['ProgrammeStartName'];
+			}
+
+			$emd_event_info = array(
+				'event_name'              => ( ! empty( $eventName ) ? $eventName : "" ),
+				'event_company'           => $organization['OrganisationName'],
+				'genre_of_event'          => ( ! empty( $_event['CategoryName'] ) ? $_event['CategoryName'] : "" ),
+				'arena_name'              => ( ! empty( $_event['AddressName'] ) ? $_event['AddressName'] : "" ),
+				'arena_location'          => array(
+					'street_address' => $locationAddress,
+					'postal_code'    => $locationPostalCode,
+					'city'           => ( ! empty( $_event['City'] ) ? $_event['City'] : "" ),
+					'country'        => $locationCountry
+				),
+				'start_time'              => date( 'Y-m-d\TH:i', strtotime( $_event['StartDate'] ) ),
+				'end_time'                => date( 'Y-m-d\TH:i', strtotime( $_event['EndDate'] ) ),
+				'access_controlled_venue' => false
+			);
+
+			$emd_event_info = array( $emd_event_info );
+
+			$emd_attachment = array(
+				'customer_account_info' => $emd_info,
+				'event'                 => $emd_event_info
+			);
 
 			$create['attachment']                 = array();
 			$create['attachment']['content_type'] = 'application/vnd.klarna.internal.emd-v2+json';
-			$create['attachment']['body']         = $emd_attachment;
+			$create['attachment']['body']         = json_encode( $emd_attachment );
 
 			$create['locale']            = strtolower( str_replace( '_', '-', get_locale() ) );
 			$create['purchase_country']  = $purchase_country;
@@ -208,27 +265,6 @@ if ( ! class_exists( 'EDU_KlarnaCheckout' ) ) {
 			$merchant['terms_uri'] = $this->get_option( 'termsurl', '' );
 
 			$current_url = esc_url( "{$_SERVER['REQUEST_SCHEME']}://{$_SERVER['HTTP_HOST']}{$_SERVER['REQUEST_URI']}" );
-
-			$booking_id           = 0;
-			$programme_booking_id = 0;
-
-			$reference_id = 0;
-
-			$_event = null;
-
-			if ( ! empty( $ebi->EventBooking['BookingId'] ) ) {
-				$booking_id   = intval( $ebi->EventBooking['BookingId'] );
-				$reference_id = $booking_id;
-
-				$_event = EDUAPI()->OData->Events->GetItem( $ebi->EventBooking['EventId'] );
-			}
-
-			if ( ! empty( $ebi->EventBooking['ProgrammeBookingId'] ) ) {
-				$programme_booking_id = intval( $ebi->EventBooking['ProgrammeBookingId'] );
-				$reference_id         = $programme_booking_id;
-
-				$_event = EDUAPI()->OData->ProgrammeStarts->GetItem( $ebi->EventBooking['ProgrammeStartId'] );
-			}
 
 			$rowExtraInfo = "";
 
